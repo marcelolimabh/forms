@@ -27,18 +27,15 @@ export class DataFormComponent implements OnInit {
   }
 
   onSubmit(){
-
     console.log(this.formulario.value);
     this.dataFormService.salvaDadosFormReativo(this.formulario.value).subscribe(dados => {
         console.log(dados);
+        this.resetar();
+    },(erro)=> alert('erro'));
+  }
 
-    })
-
-
-
-
-
-
+  resetar(){
+    this.formulario.reset();
   }
 
 }
