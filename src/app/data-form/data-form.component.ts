@@ -1,3 +1,4 @@
+import { DataFormService } from './data-form.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from "@angular/forms";
 
@@ -10,7 +11,7 @@ export class DataFormComponent implements OnInit {
 
   formulario: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private dataFormService: DataFormService) { }
 
   ngOnInit() {
 
@@ -23,6 +24,21 @@ export class DataFormComponent implements OnInit {
       nome: [null],
       email: [null]
     });
+  }
+
+  onSubmit(){
+
+    console.log(this.formulario.value);
+    this.dataFormService.salvaDadosFormReativo(this.formulario.value).subscribe(dados => {
+        console.log(dados);
+
+    })
+
+
+
+
+
+
   }
 
 }

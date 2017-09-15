@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { EnderecoService } from './../shared/services/endereco.service';
 import { DataFormComponent } from './data-form.component';
 import { SharedModule } from './../shared/shared.module';
+import { DataFormService } from './data-form.service';
+
 
 
 @NgModule({
@@ -17,6 +19,6 @@ import { SharedModule } from './../shared/shared.module';
 
   ],
   declarations: [ DataFormComponent],
-  providers: [ EnderecoService ]
+  providers: [ EnderecoService, DataFormService ]
 })
 export class DataFormModule { }
