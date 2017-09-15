@@ -1,3 +1,5 @@
+import { TemplateFormService } from './template-form.service';
+import { Http } from '@angular/http';
 import { Endereco } from './../shared/entities/endereco';
 import { EnderecoService } from './../shared/services/endereco.service';
 import { Component, OnInit } from '@angular/core';
@@ -10,108 +12,99 @@ import { Component, OnInit } from '@angular/core';
 export class TemplateFormComponent implements OnInit {
 
   usuario: any = {
-    nome :"Marcelo Lima",
+    nome: "Marcelo Lima",
     email: "marcelo.lima@email.com"
   }
 
-  constructor(private enderecoService: EnderecoService) { }
+  constructor(private enderecoService: EnderecoService, private templateFormService: TemplateFormService) { }
 
   ngOnInit() {
   }
 
-  onSubmit(form){
+  onSubmit(form) {
     console.log(form);
-    console.log(this.usuario);
-
-
+    this.templateFormService.salvaFromulario(form.value).subscribe(dados => console.log(dados));
   }
 
-  verificaValidTouched(campo){
+  verificaValidTouched(campo) {
     return !campo.valid && campo.touched;
   }
 
-  aplicaCssErro(campo, form){
+  aplicaCssErro(campo, form) {
     return {
       'has-error': this.verificaValidTouched(campo),
       'has-feedback': this.verificaValidTouched(campo)
     }
   }
 
-  consultaCep(cep, form){
+  consultaCep(cep, form) {
 
-    console.log('Cep recebido do form: '+ cep);
+    console.log('Cep recebido do form: ' + cep);
 
 
     //Nova variável "cep" somente com dígitos.
     cep = cep.replace(/\D/g, '');
 
-    if(cep != ''){
+    if (cep != '') {
 
       //Expressão regular para validar o CEP.
       let validacep = /^[0-9]{8}$/;
 
-       //Valida o formato do CEP.
-       if(validacep.test(cep)) {
-         this.resetDadosEndereco(form);
+      //Valida o formato do CEP.
+      if (validacep.test(cep)) {
+        this.resetDadosEndereco(form);
 
-       this.enderecoService.obterDadosEnderecoPorCep(cep).subscribe(dados =>{
+        this.enderecoService.obterDadosEnderecoPorCep(cep).subscribe(dados => {
 
-         this.populaDadosForm(dados,form);
+          this.populaDadosForm(dados, form);
 
-       });
-
-
-
+        });
       }
     }
-
   }
 
-  populaDadosForm(dados, form){
-/*
-      form.setValue({
-        nome: form.value.nome,
-        email: form.value.email,
-        endereco: {
-          cep: dados.cep,
-          numero: '',
-          complemento: dados.complemento,
-          rua: dados.logradouro ,
-          bairro: dados.bairro,
-          cidade: dados.localidade,
-          estado: dados.uf
-        }
-      });*/
+  populaDadosForm(dados, form) {
+    /*
+          form.setValue({
+            nome: form.value.nome,
+            email: form.value.email,
+            endereco: {
+              cep: dados.cep,
+              numero: '',
+              complemento: dados.complemento,
+              rua: dados.logradouro ,
+              bairro: dados.bairro,
+              cidade: dados.localidade,
+              estado: dados.uf
+            }
+          });*/
 
 
-      form.form.patchValue({
-        endereco: {
-          cep: dados.cep,
-          numero: '',
-          complemento: dados.complemento,
-          rua: dados.logradouro ,
-          bairro: dados.bairro,
-          cidade: dados.localidade,
-          estado: dados.uf
-        }
-      });
+    form.form.patchValue({
+      endereco: {
+        cep: dados.cep,
+        numero: '',
+        complemento: dados.complemento,
+        rua: dados.logradouro,
+        bairro: dados.bairro,
+        cidade: dados.localidade,
+        estado: dados.uf
+      }
+    });
   }
 
-  resetDadosEndereco(form){
+  resetDadosEndereco(form) {
 
     form.form.patchValue({
       endereco: {
         cep: '',
         numero: '',
         complemento: '',
-        rua: '' ,
+        rua: '',
         bairro: '',
         cidade: '',
         estado: ''
       }
     });
-
-
   }
-
 }
