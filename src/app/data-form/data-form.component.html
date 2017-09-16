@@ -1,21 +1,33 @@
 <div class="container">
   <form class="form-horizontal" [formGroup]="formulario" (ngSubmit)="onSubmit()">
-    <div class="form-group">
+    <div class="form-group" [ngClass]="aplicaCssErro('nome')">
       <div class="col-sm-12">
         <label for="nome" class="control-label">Nome</label>
       </div>
       <div class="col-sm-12">
         <input type="text" class="form-control" id="nome" formControlName="nome" placeholder="Nome">
+         <!--Componente de mensagem de erro -->
+
+         <app-campo-control-erro [mostraErro]="verificaValidTouched('nome')" mostraMsg="Nome é obrigatório."></app-campo-control-erro>
+
+
       </div>
     </div>
 
 
-    <div class="form-group">
+    <div class="form-group" [ngClass]="aplicaCssErro('email')">
       <div class="col-sm-12">
         <label for="email" class="control-label">Email address</label>
       </div>
       <div class="col-sm-12">
-        <input type="email" class="form-control" id="email" formControlName="email" required placeholder="nome@email.com">
+        <input type="email" class="form-control" id="email" formControlName="email"  placeholder="nome@email.com">
+
+        <!--Componente de mensagem de erro -->
+        <app-campo-control-erro [mostraErro]="verificaCampoEmailInvalido()" mostraMsg="Email inválido."></app-campo-control-erro>
+        <app-campo-control-erro [mostraErro]="verificaValidTouched('email')" mostraMsg="Email é obrigatório."></app-campo-control-erro>
+
+
+
       </div>
     </div>
 

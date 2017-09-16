@@ -1,6 +1,8 @@
 import { DataFormService } from './data-form.service';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from "@angular/forms";
+import { FormGroup, FormControl, FormBuilder, Validators } from "@angular/forms";
+
+const REGEX_EMAIL:string ="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
 
 @Component({
   selector: 'app-data-form',
@@ -21,8 +23,8 @@ export class DataFormComponent implements OnInit {
     });*/
 
     this.formulario = this.formBuilder.group({
-      nome: [null],
-      email: [null]
+      nome: [null, Validators.required],
+      email: [null, [Validators.required, Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")]]
     });
   }
 
@@ -36,6 +38,26 @@ export class DataFormComponent implements OnInit {
 
   resetar(){
     this.formulario.reset();
+  }
+
+  verificaValidTouched(campo) {
+    return !this.formulario.get(campo).valid && this.formulario.get(campo).touched;
+  }
+
+  verificaCampoEmailInvalido(){
+    let campoEmail = this.formulario.get('email');
+    console.log(campoEmail);
+    console.log(this.formulario);
+    if(campoEmail.errors){
+      return campoEmail.errors['pattern']  && campoEmail.touched;
+    }
+  }
+
+  aplicaCssErro(campo) {
+    return {
+      'has-error': this.verificaValidTouched(campo),
+      'has-feedback': this.verificaValidTouched(campo)
+    }
   }
 
 }
