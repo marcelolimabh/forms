@@ -80,7 +80,7 @@
 
         <!-- Estado -->
 
-        <div class="col-sm-3" [ngClass]="aplicaCssErro(cidade)">
+        <div class="col-sm-3" [ngClass]="aplicaCssErro(estado)">
           <label for="estado" class="control-label">Estado</label>
           <input type="text" class="form-control" id="estado" name="estado" ngModel required #estado="ngModel" readonly>
           <app-campo-control-erro [mostraErro]="verificaValidTouched(estado)" mostraMsg=" Estado é obrigatório."></app-campo-control-erro>
