@@ -41,12 +41,30 @@ export class DataFormComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.formulario.value);
-    this.dataFormService.salvaDadosFormReativo(this.formulario.value).subscribe(dados => {
-      console.log(dados);
-      this.resetar();
-    }, (erro) => alert('erro'));
+
+    if (this.formulario.valid) {
+      this.dataFormService.salvaDadosFormReativo(this.formulario.value).subscribe(dados => {
+        console.log(dados);
+        this.resetar();
+      }, (erro) => alert('erro'));
+    } else {
+      console.log('Formulário Inválido');
+      this.verificaValidacoesFormulario(this.formulario);
+    }
   }
+
+
+  verificaValidacoesFormulario(fromGroup: FormGroup) {
+    Object.keys(fromGroup.controls).forEach(campo => {
+      const controle = fromGroup.get(campo);
+      controle.markAsTouched();
+      if (controle instanceof FormGroup) {
+        this.verificaValidacoesFormulario(controle);
+      }
+    });
+
+  }
+
 
 
 
@@ -72,7 +90,7 @@ export class DataFormComponent implements OnInit {
     }
   }
 
-  consultaCep(){
+  consultaCep() {
     let cep = this.formulario.get('endereco.cep').value;
     console.log('Cep recebido do form: ' + cep);
 
